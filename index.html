@@ -2,11 +2,30 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Saha Shop - Admin</title>
+  <title>Saha Shop</title>
   <style>
     body {
       font-family: Arial;
       padding: 20px;
+    }
+    header, nav {
+      background-color: #f8f8f8;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      gap: 20px;
+    }
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    section {
+      margin-bottom: 40px;
     }
     .produit {
       border: 1px solid #ccc;
@@ -20,23 +39,56 @@
       width: 100%;
       height: auto;
     }
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #888;
+    }
   </style>
 </head>
 <body>
-  <h1>🛒 Saha Shop - Ajouter un produit</h1>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#boutique">Boutique</a></li>
+        <li><a href="#ajouter">Ajouter un produit</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <form id="ajout-form">
-    <label>Nom : <input type="text" id="nom" required></label><br>
-    <label>Prix (DA) : <input type="number" id="prix" required></label><br>
-    <label>Image URL : <input type="text" id="image" required></label><br>
-    <label>Catégorie : <input type="text" id="categorie" required></label><br>
-    <button type="submit">Ajouter</button>
-  </form>
+  <section id="accueil">
+    <h1>Bienvenue sur Saha Shop</h1>
+    <p>Des produits 100 % naturels et faits avec amour.</p>
+  </section>
 
-  <h2>🛍️ Produits enregistrés</h2>
-  <div id="produits"></div>
+  <section id="boutique">
+    <h2>🛎️ Produits disponibles</h2>
+    <div id="produits"></div>
+  </section>
 
-  <!-- Firebase App (base) -->
+  <section id="ajouter">
+    <h2>🛒 Ajouter un produit</h2>
+    <form id="ajout-form">
+      <label>Nom : <input type="text" id="nom" required></label><br>
+      <label>Prix (DA) : <input type="number" id="prix" required></label><br>
+      <label>Image URL : <input type="text" id="image" required></label><br>
+      <label>Catégorie : <input type="text" id="categorie" required></label><br>
+      <button type="submit">Ajouter</button>
+    </form>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Pour toute commande ou information : <strong>alilou@email.com</strong></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Saha Shop. Tous droits réservés.</p>
+  </footer>
+
+  <!-- Firebase App (compat mode) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 

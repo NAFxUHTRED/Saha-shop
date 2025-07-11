@@ -1,52 +1,98 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Boutique Alilou</title>
+  <meta charset="UTF-8">
+  <title>Saha Shop</title>
   <link rel="stylesheet" href="style.css">
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQ1ojwwuA7YpS30mLRYwObgm1NIwNrw8Q",
+      authDomain: "sahashop-e1da9.firebaseapp.com",
+      projectId: "sahashop-e1da9",
+      storageBucket: "sahashop-e1da9.firebasestorage.app",
+      messagingSenderId: "561626596508",
+      appId: "1:561626596508:web:3be6e3a623c597db68d959",
+      measurementId: "G-9MH5EDZ5CT"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("ajout-form");
+    const produitContainer = document.getElementById("produits");
+
+    async function afficherProduits() {
+      produitContainer.innerHTML = "";
+      const snapshot = await getDocs(collection(db, "produits"));
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.className = "produit";
+        div.innerHTML = `
+          <img src="${data.image}" alt="${data.nom}" />
+          <h3>${data.nom}</h3>
+          <p>${data.prix} DA</p>
+          <p><em>${data.categorie}</em></p>
+        `;
+        produitContainer.appendChild(div);
+      });
+    }
+
+    afficherProduits();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nom = document.getElementById("nom").value;
+      const prix = parseInt(document.getElementById("prix").value);
+      const image = document.getElementById("image").value;
+      const categorie = document.getElementById("categorie").value;
+
+      await addDoc(collection(db, "produits"), {
+        nom,
+        prix,
+        image,
+        categorie
+      });
+
+      form.reset();
+      afficherProduits();
+    });
+  </script>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+    .produit {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px;
+      display: inline-block;
+      width: 200px;
+      vertical-align: top;
+    }
+    .produit img {
+      width: 100%;
+      height: auto;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Bienvenue chez Alilou</h1>
-    <nav>
-      <a href="#produits">Produits</a>
-      <a href="#panier">Panier</a>
-      <a href="#commande">Commander</a>
-    </nav>
-  </header>
+  <h1>🛒 Saha Shop - Ajouter un produit</h1>
 
-  <section class="filters">
-    <button class="filtre active" data-cat="all">Tous</button>
-    <button class="filtre" data-cat="Pâtisseries">Pâtisseries</button>
-    <button class="filtre" data-cat="Produits à tartiner">Produits à tartiner</button>
-    <button class="filtre" data-cat="Thé & infusions">Thé & infusions</button>
-    <button class="filtre" data-cat="Emballages">Emballages</button>
-    <button class="filtre" data-cat="Naturels">100% naturels</button>
-  </section>
+  <form id="ajout-form">
+    <label>Nom : <input type="text" id="nom" required></label><br>
+    <label>Prix (DA) : <input type="number" id="prix" required></label><br>
+    <label>Image URL : <input type="text" id="image" required></label><br>
+    <label>Catégorie : <input type="text" id="categorie" required></label><br>
+    <button type="submit">Ajouter</button>
+  </form>
 
-  <section class="produits" id="produits"></section>
-
-  <section id="panier">
-    <h2>🛒 Mon Panier</h2>
-    <ul id="liste-panier"></ul>
-    <p><strong>Total : <span id="total">0</span> DA</strong></p>
-  </section>
-
-  <section id="commande">
-    <h2>📦 Passer la commande</h2>
-    <form id="form-commande">
-      <input type="text" placeholder="Votre nom" id="nom-client" required><br><br>
-      <input type="text" placeholder="Adresse de livraison" id="adresse-client" required><br><br>
-      <button type="submit">Commander</button>
-    </form>
-    <p id="confirmation"></p>
-  </section>
-
-  <footer>
-    &copy; 2025 Alilou. Tous droits réservés.
-  </footer>
-
-  <script src="script.js"></script>
+  <h2>🛍️ Produits enregistrés</h2>
+  <div id="produits"></div>
 </body>
 </html>

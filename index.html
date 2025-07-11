@@ -1,67 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Saha Shop</title>
-  <link rel="stylesheet" href="style.css">
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDQ1ojwwuA7YpS30mLRYwObgm1NIwNrw8Q",
-      authDomain: "sahashop-e1da9.firebaseapp.com",
-      projectId: "sahashop-e1da9",
-      storageBucket: "sahashop-e1da9.firebasestorage.app",
-      messagingSenderId: "561626596508",
-      appId: "1:561626596508:web:3be6e3a623c597db68d959",
-      measurementId: "G-9MH5EDZ5CT"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const form = document.getElementById("ajout-form");
-    const produitContainer = document.getElementById("produits");
-
-    async function afficherProduits() {
-      produitContainer.innerHTML = "";
-      const snapshot = await getDocs(collection(db, "produits"));
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const div = document.createElement("div");
-        div.className = "produit";
-        div.innerHTML = `
-          <img src="${data.image}" alt="${data.nom}" />
-          <h3>${data.nom}</h3>
-          <p>${data.prix} DA</p>
-          <p><em>${data.categorie}</em></p>
-        `;
-        produitContainer.appendChild(div);
-      });
-    }
-
-    afficherProduits();
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const nom = document.getElementById("nom").value;
-      const prix = parseInt(document.getElementById("prix").value);
-      const image = document.getElementById("image").value;
-      const categorie = document.getElementById("categorie").value;
-
-      await addDoc(collection(db, "produits"), {
-        nom,
-        prix,
-        image,
-        categorie
-      });
-
-      form.reset();
-      afficherProduits();
-    });
-  </script>
+  <title>Saha Shop - Admin</title>
   <style>
     body {
       font-family: Arial;
@@ -94,5 +35,59 @@
 
   <h2>🛍️ Produits enregistrés</h2>
   <div id="produits"></div>
+
+  <!-- Firebase App (base) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDQ1ojwwuA7YpS30mLRYwObgm1NIwNrw8Q",
+      authDomain: "sahashop-e1da9.firebaseapp.com",
+      projectId: "sahashop-e1da9",
+      storageBucket: "sahashop-e1da9.firebasestorage.app",
+      messagingSenderId: "561626596508",
+      appId: "1:561626596508:web:3be6e3a623c597db68d959",
+      measurementId: "G-9MH5EDZ5CT"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const form = document.getElementById("ajout-form");
+    const produitContainer = document.getElementById("produits");
+
+    async function afficherProduits() {
+      produitContainer.innerHTML = "";
+      const snapshot = await db.collection("produits").get();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.className = "produit";
+        div.innerHTML = `
+          <img src="${data.image}" alt="${data.nom}" />
+          <h3>${data.nom}</h3>
+          <p>${data.prix} DA</p>
+          <p><em>${data.categorie}</em></p>
+        `;
+        produitContainer.appendChild(div);
+      });
+    }
+
+    afficherProduits();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nom = document.getElementById("nom").value;
+      const prix = parseInt(document.getElementById("prix").value);
+      const image = document.getElementById("image").value;
+      const categorie = document.getElementById("categorie").value;
+
+      await db.collection("produits").add({ nom, prix, image, categorie });
+
+      form.reset();
+      afficherProduits();
+    });
+  </script>
 </body>
 </html>

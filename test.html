@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Boutique Alilou</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Bienvenue chez Alilou</h1>
+    <nav>
+      <a href="#produits">Produits</a>
+      <a href="#panier">Panier</a>
+      <a href="#commande">Commander</a>
+    </nav>
+  </header>
+
+  <section class="filters">
+    <button class="filtre active" data-cat="all">Tous</button>
+    <button class="filtre" data-cat="Pâtisseries">Pâtisseries</button>
+    <button class="filtre" data-cat="Produits à tartiner">Produits à tartiner</button>
+    <button class="filtre" data-cat="Thé & infusions">Thé & infusions</button>
+    <button class="filtre" data-cat="Emballages">Emballages</button>
+    <button class="filtre" data-cat="Naturels">100% naturels</button>
+  </section>
+
+  <section class="produits" id="produits"></section>
+
+  <section id="panier">
+    <h2>🛒 Mon Panier</h2>
+    <ul id="liste-panier"></ul>
+    <p><strong>Total : <span id="total">0</span> DA</strong></p>
+  </section>
+
+  <section id="commande">
+    <h2>📦 Passer la commande</h2>
+    <form id="form-commande">
+      <input type="text" placeholder="Votre nom" id="nom-client" required><br><br>
+      <input type="text" placeholder="Adresse de livraison" id="adresse-client" required><br><br>
+      <button type="submit">Commander</button>
+    </form>
+    <p id="confirmation"></p>
+  </section>
+
+  <footer>
+    &copy; 2025 Alilou. Tous droits réservés.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
